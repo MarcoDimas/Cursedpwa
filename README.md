@@ -1,0 +1,2 @@
+# cursedCemeteryPWA
+PWA PARA EL JUEGO CURSED CEMETERY
