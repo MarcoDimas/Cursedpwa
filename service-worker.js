@@ -31,16 +31,18 @@ const cacheAssets = [
 ];
 
 // Instalación del Service Worker
-self.addEventListener('install', (e) => {
-  console.log('Service Worker: Instalado');
-  e.waitUntil(
-    caches.open(cacheName).then((cache) => {
-      console.log('Service Worker: Cacheando Archivos');
-      return cache.addAll(cacheAssets);
-    })
-  );
+self.addEventListener('install', e => {
+    // Espera hasta que todos los archivos estén en caché antes de completar la instalación
+    e.waitUntil(
+        caches.open(cacheName) // Abre (o crea) el caché con el nombre especificado
+            .then(cache => {
+                // Agrega todos los archivos en `assets` al caché
+                return cache.addAll(assets)
+                    .then(() => self.skipWaiting()); // Fuerza al SW a activarse inmediatamente después de instalarse
+            })
+            .catch(err => console.log('Falló registro de cache', err)) // Log de errores en caso de que falle
+    );
 });
-
 // Activación del Service Worker
 self.addEventListener('activate', (e) => {
   console.log('Service Worker: Activado');
