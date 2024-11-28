@@ -44,23 +44,27 @@ self.addEventListener('install', e => {
     );
 });
 // Activación del Service Worker
-self.addEventListener('activate', (e) => {
-  console.log('Service Worker: Activado');
-  // Limpiar cachés antiguos
-  e.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cache) => {
-          if (cache !== cacheName) {
-            console.log('Service Worker: Limpiando caché', cache);
-            return caches.delete(cache);
-          }
-        })
-      );
-    })
-  );
-});
+self.addEventListener('activate', e => {
+    // Lista de cachés permitidos (whitelist) que queremos conservar
+    const cacheWhitelist = [cacheName];
 
+    // Elimina cachés antiguos que no están en la lista de permitidos
+    e.waitUntil(
+        caches.keys() // Obtiene todos los nombres de caché actuales
+            .then(cacheNames => {
+                // Mapea y elimina cachés que no están en la whitelist
+                return Promise.all(
+                    cacheNames.map(cName => {
+                        // Si el caché actual no está en la whitelist, elimínalo
+                        if (!cacheWhitelist.includes(cName)) {
+                            return caches.delete(cName); // Elimina el caché obsoleto
+                        }
+                    })
+                );
+            })
+            .then(() => self.clients.claim())
+    );
+});
 
 // Fetch (recuperar recursos desde cache o red)
 self.addEventListener('fetch', (e) => {
