@@ -20,10 +20,10 @@ const cacheAssets = [
   '/views/niveles.html',
   '/views/instalacion.html',
   '/views/contacto.html',
-  'assets/dani.jpg',
-  'assets/pasodos.jpg',
-  'assets/pasotres.jpg',
-  'assets/pasocuatro.jpg',
+  'Cursedpwa/assets/dani.jpg',
+  'Cursedpwa/assets/pasodos.jpg',
+  'Cursedpwa/assets/pasotres.jpg',
+  'Cursedpwa/assets/pasocuatro.jpg',
 
   
 
